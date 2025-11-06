@@ -18,6 +18,7 @@ resource "aws_s3_bucket" "proyecto2_c_y_a_s3_bucket" {
   bucket = "proyecto2-c-y-a-s3-${random_id.bucket_suffix.hex}"
   tags = { Name = "proyecto2_c_y_a_s3_bucket" }
   object_lock_enabled = false
+  force_destroy = true
 }
 
 resource "aws_s3_bucket_public_access_block" "proyecto2_c_y_a_s3_pab" {
@@ -76,7 +77,6 @@ resource "aws_lb_target_group_attachment" "proyecto2_c_y_a_web_attachment" {
   port             = 80
 }
 
-# --- RECURSOS DE BASE DE DATOS (RDS) ---
 resource "aws_db_subnet_group" "proyecto2_c_y_a_db_subnet_group" {
   name       = "proyecto2-c-y-a-db-subnet-group"
   subnet_ids = module.network.private_subnets
@@ -86,7 +86,6 @@ resource "aws_db_subnet_group" "proyecto2_c_y_a_db_subnet_group" {
 }
 
 resource "aws_db_instance" "proyecto2_c_y_a_db" {
-  # Los identificadores de BD no pueden tener "_"
   identifier           = "proyecto2-c-y-a-db"
   engine               = "mysql"
   engine_version       = "8.0"
